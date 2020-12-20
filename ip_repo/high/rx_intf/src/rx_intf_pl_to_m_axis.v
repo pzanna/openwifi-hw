@@ -200,12 +200,12 @@
           end
 
           DMA_HEADER2_INSERT: begin // data is calculated by calc_phy_header C program
-            data_to_m_axis <= {phase_offset_full_out, mag_sq_out};
+            data_to_m_axis <= {pilot_phase_out, phase_offset_full_out};
             rx_state <= DMA_HEADER3_INSERT_AND_START;
           end
 
           DMA_HEADER3_INSERT_AND_START: begin // data is calculated by calc_phy_header C program
-            data_to_m_axis <= {pilot_phase_out, 32'haabbccdd};
+            data_to_m_axis <= { 32'haabbccdd, mag_sq_out};
             rx_state <= WAIT_FILTER_FLAG;
           end
 
