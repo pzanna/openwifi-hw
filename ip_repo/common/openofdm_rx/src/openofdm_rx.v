@@ -33,6 +33,12 @@
 		output wire [15:0] byte_count,
 		output wire fcs_out_strobe,
 		output wire fcs_ok,
+
+		// for WP4
+		output wire signed [31:0] phase_offset_full_out,
+		output wire [31:0] mag_sq_out,
+		output wire signed [31:0] pilot_phase_out,
+
 		// for side channel
     	output wire [31:0] csi,
     	output wire csi_valid,
@@ -149,6 +155,7 @@
 		// sync short
 		.short_preamble_detected(short_preamble_detected),
 		.phase_offset(),
+		.phase_offset_full_out(phase_offset_full_out),
 
 		// sync long
 		.sync_long_metric(),
@@ -164,6 +171,8 @@
 		.equalizer_out_strobe(equalizer_valid),
 		.equalizer_state(equalizer_state),
 		.ofdm_symbol_eq_out_pulse(ofdm_symbol_eq_out_pulse),
+		.mag_sq_out(mag_sq_out),
+		.pilot_phase_out(pilot_phase_out),
 
 		// legacy signal info
 		.legacy_sig_stb(),

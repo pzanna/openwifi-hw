@@ -55,6 +55,7 @@ module dot11 (
     // sync short
     output short_preamble_detected,
     output [31:0] phase_offset,
+    output wire [31:0] phase_offset_full_out,
 
     // sync long
     output [31:0] sync_long_metric,
@@ -70,6 +71,8 @@ module dot11 (
     output equalizer_out_strobe,
     output [2:0] equalizer_state,
     output wire ofdm_symbol_eq_out_pulse,
+    output wire [31:0] mag_sq_out,
+    output wire [31:0] pilot_phase_out,
 
     // legacy signal info
     output reg legacy_sig_stb,
@@ -332,7 +335,8 @@ sync_short sync_short_inst (
     .phase_out_stb(sync_short_phase_out_stb),
 
     .short_preamble_detected(short_preamble_detected),
-    .phase_offset(phase_offset)
+    .phase_offset(phase_offset),
+    .phase_offset_full_out(phase_offset_full_out)
 );
 
 sync_long sync_long_inst (
@@ -385,7 +389,10 @@ equalizer equalizer_inst (
     .state(equalizer_state),
 
     .csi(csi),
-    .csi_valid(csi_valid)
+    .csi_valid(csi_valid),
+
+    .mag_sq_out(mag_sq_out),
+    .pilot_phase_out(pilot_phase_out)
 );
 
 

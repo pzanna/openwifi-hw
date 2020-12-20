@@ -19,6 +19,7 @@ module sync_short (
     output [31:0] phase_in_q,
     output phase_in_stb,
 
+    output reg signed [31:0] phase_offset_full_out,
     output reg signed [31:0] phase_offset
 );
 `include "common_params.v"
@@ -259,6 +260,8 @@ always @(posedge clock) begin
         plateau_count <= 0;
         short_preamble_detected <= 0;
         phase_offset <= 0;
+        phase_offset_full_out <= 0;
+        
     end else if (enable) begin
         sample_delayed_conj_stb <= sample_delayed_stb;
         sample_delayed_conj[31:16] <= sample_delayed[31:16];
@@ -285,6 +288,7 @@ always @(posedge clock) begin
                     pos_count <= 0;
                     neg_count <= 0;
                     short_preamble_detected <= has_pos & has_neg;
+                    phase_offset_full_out <= phase_out_neg;
                     phase_offset <= {{4{phase_out_neg[31]}}, phase_out_neg[31:4]};
                 end else begin
                     plateau_count <= plateau_count + 1;

@@ -27,7 +27,11 @@ module equalizer
 
     // for side channel
     output wire [31:0] csi,
-    output wire csi_valid
+    output wire csi_valid,
+
+    // for WP4
+    output reg [31:0] mag_sq_out,
+    output reg [31:0] pilot_phase_out
 );
 
 
@@ -461,6 +465,9 @@ always @(posedge clock) begin
 
         num_output <= 0;
 
+        mag_sq_out <= 0;
+        pilot_phase_out <= 0;
+
         state <= S_FIRST_LTS;
     end else if (enable) begin
         sample_in_strobe_dly <= sample_in_strobe;
@@ -672,6 +679,9 @@ always @(posedge clock) begin
                 end
 
                 if (phase_out_stb) begin
+                    if (num_ofdm_sym == 1) begin
+                        pilot_phase_out = phase_out;
+                    end
                     `ifdef DEBUG_PRINT
                         $display("[PILOT OFFSET] %d", phase_out);
                     `endif
@@ -714,6 +724,10 @@ always @(posedge clock) begin
                 end
 
                 if (num_output == num_data_carrier) begin
+                    mag_sq_out <= mag_sq;
+                    `ifdef DEBUG_PRINT
+                        $display("[MAG_SQ] %d", mag_sq);
+                    `endif
                     state <= S_GET_POLARITY;
                 end
             end
