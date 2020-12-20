@@ -50,6 +50,9 @@
 		input  wire [15:0] byte_count,
         input  wire fcs_in_strobe,
 		input  wire fcs_ok,
+        input wire signed [31:0] phase_offset_full_out,
+        input wire [31:0] mag_sq_out,
+        input wire signed [31:0] pilot_phase_out,
 
 	    // interrupt to PS
         output wire rx_pkt_intr,
@@ -440,6 +443,10 @@
         .ht_unsupport(ht_unsupport),
         .fcs_valid(fcs_valid),
         
+        .phase_offset_full_out(phase_offset_full_out),
+        .mag_sq_out(mag_sq_out),
+        .pilot_phase_out(pilot_phase_out), 
+
         .rf_iq(rf_iq_loopback),
         .rf_iq_valid(sample_strobe),
 

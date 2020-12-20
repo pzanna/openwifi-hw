@@ -60,7 +60,10 @@
       input wire ht_sgi,
       input wire ht_unsupport,
 	    input wire fcs_valid,
-    
+      input wire signed [31:0] phase_offset_full_out,
+      input wire [31:0] mag_sq_out,
+      input wire signed [31:0] pilot_phase_out,
+
 	    // from wifi_rx_iq_intf loop back
 	    input wire [(4*IQ_DATA_WIDTH-1):0] rf_iq,
 	    input wire rf_iq_valid,
@@ -197,12 +200,12 @@
           end
 
           DMA_HEADER2_INSERT: begin // data is calculated by calc_phy_header C program
-            data_to_m_axis <= {32'haaaabbbb, 32'hccccdddd};
+            data_to_m_axis <= {phase_offset_full_out, mag_sq_out};
             rx_state <= DMA_HEADER3_INSERT_AND_START;
           end
 
           DMA_HEADER3_INSERT_AND_START: begin // data is calculated by calc_phy_header C program
-            data_to_m_axis <= {32'h11223344, 32'h44556677};
+            data_to_m_axis <= {pilot_phase_out, 32'haabbccdd};
             rx_state <= WAIT_FILTER_FLAG;
           end
 
